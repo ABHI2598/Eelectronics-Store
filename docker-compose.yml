@@ -1,0 +1,38 @@
+version: '3'
+services:
+  dbservice:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      # -MYSQL_USERNAME=abhinav
+      #
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - 3308:3306
+    networks:
+      - bootapp
+
+
+
+  appservice:
+    build: .
+    depends_on:
+      - dbservice
+    environment:
+      - spring.datasource.url=jdbc:mysql://dbservice:3306/selectronic_store?createDatabaseIfNotExist=true
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+    ports:
+      - 9090:9090
+
+    networks:
+      - bootapp
+
+
+networks:
+  bootapp:
+
+
+
+
